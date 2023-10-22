@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<!-- _________________________ Application Settings _________________________ -->
+
+	<app title="Frogger" file="Frogger" main="Main" version="1.8.0" company="BluromanGames" build-number="38" package="com.bluroman.frogger"/>
+
+	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
+		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
+    <app preloader="CustomPreloader" />
+
+	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
+	<set name="SWF_VERSION" value="11.8" />
+    <setenv name="ADMOB_APPID" value="ca-app-pub-6964194614288140~9851716939" if="android"/>
+    <setenv name="ADMOB_APPID" value="ca-app-pub-6964194614288140~8575555606" if="ios"/>
+    <!-- <setenv name="NSBluetoothAlwaysUsageDescription" value="App would like to use your bluetooth for communication purposes" if="ios"/> -->
+
+    <!-- <android minimum-sdk-version="23" target-sdk-version="30" /> -->
+    <android minimum-sdk-version="23" target-sdk-version="33" if="android" />
+
+    <certificate path="bluromangames.keystore" alias="bluroman" password="nam2363" if="android" />
+    <config:android gradle-version="6.7.1" if="android" />
+    <config:android gradle-plugin="4.2.0" if="android" />
+    <!-- <config:android gradle-plugin="3.5.4" /> -->
+    <!-- <set name="google-play-services-ads-lite" value="20.2.0"/> -->
+    <!-- <set name="google-play-services-basement" value="20.2.0"/> -->
+    <!-- <set name="google-play-services-games" value="17.0.0"/> -->
+    <!-- <set name="google-play-services-plus" value="17.0.0"/> -->
+    <!-- <set name="google-play-services-drive" value="17.0.0"/> -->
+
+
+    <!-- <set name="openfl-legacy" /> -->
+	<set name="playServicesVersion" value="22.2.0" />
+    <set name="playServicesGamesVersion" value="+" />
+
+    <!-- <set name="playServicesVersion" value="17.0.0" /> -->
+    <!-- <set name="play-services-auth" value="19.0.0" />
+    <set name="play-services-base" value="17.1.0" />
+    <set name="play-services-ads-lite" value="19.3.0" />
+    <set name="google-play-game-services" value="17.0.0" /> -->
+    <setenv name="GOOGLE_PLAY_GAMES_ID" value="495045865037" /> <!-- REPLACE THIS WITH YOUR GOOGLE PLAY GAMES ID! -->
+
+    <!-- <setenv name="ANDROID_GRADLE_TASK" value=":app:bundleRelease" /> -->
+
+	<!-- ____________________________ Window Settings ___________________________ -->
+
+	<!--These window settings apply to all targets-->
+	<window width="480" height="800" fps="60" background="#000000" hardware="true" vsync="true" />
+
+	<!--HTML5-specific-->
+	<window if="html5" resizable="false" />
+
+	<!--Desktop-specific-->
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+
+	<!--Mobile-specific-->
+	<window if="mobile" orientation="portrait" fullscreen="true" width="0" height="0" />
+
+	<!-- _____________________________ Path Settings ____________________________ -->
+
+	<set name="BUILD_DIR" value="export" />
+	<classpath name="source" />
+	<assets path="assets" />
+
+	<!-- _______________________________ Libraries ______________________________ -->
+
+	<haxelib name="flixel" />
+	<haxelib name="extension-admob" />
+    <haxelib name="extension-googleplaygames" />
+	<!--In case you want to use the addons package-->
+	<haxelib name="flixel-addons" />
+
+	<!--In case you want to use the ui package-->
+	<haxelib name="flixel-ui" />
+    <haxelib name="firetongue"/>
+    <!--<haxelib name="zerolib" />-->
+
+	<!--In case you want to use nape with flixel-->
+	<!--<haxelib name="nape" />-->
+
+	<!-- ______________________________ Haxedefines _____________________________ -->
+
+	<!--Enable the Flixel core recording system-->
+	<!--<haxedef name="FLX_RECORD" />-->
+
+	<!--Disable the right and middle mouse buttons-->
+	<!--<haxedef name="FLX_NO_MOUSE_ADVANCED" />-->
+
+	<!--Disable the native cursor API on Flash-->
+	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
+
+	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
+	<haxedef name="FLX_NO_MOUSE" if="mobile" />
+	<haxedef name="FLX_NO_KEYBOARD" if="mobile" />
+	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
+
+	<!--Disable the Flixel core sound tray-->
+	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->
+
+	<!--Disable the Flixel sound management code-->
+	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
+
+	<!--Disable the Flixel core focus lost screen-->
+	<!--<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />-->
+
+	<!--Disable the Flixel core debugger. Automatically gets ]set whenever you compile in release mode!-->
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+
+	<!--Enable this for Nape release builds for a serious peformance improvement-->
+	<!-- <haxedef name="NAPE_RELEASE_BUILD" unless="debug" /> -->
+    <!-- <haxedef name="shaders_supported" unless="flash || openfl-legacy" /> -->
+     <haxedef name="ADS" if="mobile" />
+     <haxedef name="GPG" if="android" />
+
+
+	<!-- _________________________________ Custom _______________________________ -->
+
+	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+    <set name="PRERENDERED_ICON" value="true" />
+
+    <!-- <icon path="Icon.png" size="57" if="ios" />
+    <icon path="Icon@2x.png" size="114" if="ios" />
+    <icon path="Icon-72.png" size="72" if="ios" />
+    <icon path="Icon-72@2x.png" size="144" if="ios" />
+    <icon path="Icon-20.png" size="20" if="ios" />
+    <icon path="Icon-29.png" size="29" if="ios" />
+    <icon path="Icon-40.png" size="40" if="ios" />
+    <icon path="Icon-50.png" size="50" if="ios" />
+    <icon path="Icon-58.png" size="58" if="ios" />
+    <icon path="Icon-76.png" size="76" if="ios" />
+    <icon path="Icon-80.png" size="80" if="ios" />
+    <icon path="Icon-87.png" size="87" if="ios" />
+    <icon path="Icon-100.png" size="100" if="ios" />
+    <icon path="Icon-120.png" size="120" if="ios" />
+    <icon path="Icon-152.png" size="152" if="ios" />
+    <icon path="Icon-167.png" size="167" if="ios" />
+    <icon path="Icon-180.png" size="180" if="ios" />
+    <icon path="Icon-1024.png" size="1024" if="ios" /> -->
+
+    <launchImage path="Default.png" width="320" height="480" if="ios" />
+    <launchImage path="Default@2x.png" width="640" height="960" />
+    <launchImage path="Default-Portrait~ipad.png" width="768" height="1024" if="ios" />
+    <launchImage path="Default-Portrait@2x~ipad.png" width="1536" height="2048" if="ios" />
+    <launchImage path="Default-Landscape~ipad.png" width="1024" height="768" if="ios" />
+    <launchImage path="Default-Landscape@2x~ipad.png" width="2048" height="1536" if="ios" />
+    <launchImage path="Default-568h@2x.png" width="640" height="1136" if="ios" />
+    <launchImage path="Default-414w-736h@3x.png" width="1242" height="2208" if="ios" />
+
+   
+    <assets path="assets" exclude="*.ogg|*.mp3" />
+    <!--<icon path="assets/images/bot.png" />-->
+
+    <assets path="assets/sounds" if="flash">
+        <music path="FroggerCoinSound.mp3" id="Coin" />
+        <music path="FroggerExtraSound.mp3" id="Extra" />
+        <music path="FroggerHopSound.mp3" id="Hop" />
+        <music path="FroggerPlunkSound.mp3" id="Plunk" />
+        <music path="FroggerSquashSound.wav" id="Squash" />
+        <music path="FroggerThemeSound.mp3" id="Theme" />
+        <music path="FroggerTimeSound.mp3" id="Time" />
+        <music path="EightBitDanceMenu001.mp3" id="Menu" />
+        <music path="CarHorn1.wav" id="Car0" />
+        <music path="CarHorn2.wav" id="Car1" />
+        <music path="CarHorn3.wav" id="Car2" />
+        <music path="CarHorn4.wav" id="Car3" />
+        <music path="CarHorn5.wav" id="Car4" />
+        <music path="Wave1.wav" id="Wave" />
+        <music path="LavaLoop.wav" id="Lava" />
+        <music path="Alligator.wav" id="Alligator" />
+        <music path="Snake.WAV" id="Snake" />
+        <music path="EightBitDanceGameOver001.mp3" id="GameOver" />
+        <music path="BONUS3.WAV" id="Bonus" />
+        <music path="C64game.mp3" id="Score" />
+        <music path="EightBitClick.mp3" id="Click" />
+    </assets>
+
+    <assets path="assets/sounds" unless="flash">
+        <sound path="FroggerCoinSound.ogg" id="Coin" />
+        <sound path="FroggerExtraSound.ogg" id="Extra" />
+        <sound path="FroggerHopSound.ogg" id="Hop" />
+        <sound path="FroggerPlunkSound.ogg" id="Plunk" />
+        <sound path="FroggerSquashSound.ogg" id="Squash" />
+        <sound path="FroggerThemeSound.ogg" id="Theme" />
+        <sound path="FroggerTimeSound.ogg" id="Time" />
+        <sound path="EightBitDanceMenu001.ogg" id="Menu" />
+        <sound path="CarHorn1.ogg" id="Car0" />
+        <sound path="CarHorn2.ogg" id="Car1" />
+        <sound path="CarHorn3.ogg" id="Car2" />
+        <sound path="CarHorn4.ogg" id="Car3" />
+        <sound path="CarHorn5.ogg" id="Car4" />
+        <sound path="Wave1.ogg" id="Wave" />
+        <sound path="LavaLoop.ogg" id="Lava" />
+        <sound path="Alligator.ogg" id="Alligator" />
+        <sound path="Snake.ogg" id="Snake" />
+        <sound path="EightBitDanceGameOver001.ogg" id="GameOver" />
+        <sound path="BONUS3.ogg" id="Bonus" />
+        <sound path="C64game.ogg" id="Score" />
+        <sound path="EightBitClick.ogg" id="Click" />
+    </assets>
+    <icon path="Icon-1024.svg" />
+</project>

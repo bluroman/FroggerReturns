@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="12" height="22" tilewidth="40" tileheight="40" infinite="0" nextlayerid="5" nextobjectid="29">
+ <tileset firstgid="1" source="frogger_atlas_01.tsx"/>
+ <layer id="1" name="background0" width="12" height="22">
+  <properties>
+   <property name="animated" type="bool" value="false"/>
+   <property name="nocollide" value="true"/>
+   <property name="tileset" value="frogger_atlas_01"/>
+  </properties>
+  <data encoding="csv">
+94,94,94,94,94,94,94,94,94,94,94,94,
+94,94,92,94,94,94,94,94,94,94,94,94,
+94,94,94,94,94,94,94,94,90,94,94,94,
+94,94,94,89,94,94,94,94,94,94,94,94,
+94,89,90,94,94,91,94,91,94,94,94,94,
+94,94,94,94,94,94,94,94,94,91,94,94,
+94,94,92,94,92,94,94,94,94,94,94,94,
+94,89,91,94,94,94,91,94,94,92,90,94,
+94,94,94,91,94,94,94,91,94,94,94,94,
+94,94,94,94,94,94,94,94,94,94,94,94,
+94,91,94,94,94,94,94,94,89,94,94,94,
+390,390,390,390,390,390,390,390,390,390,390,390,
+390,94,91,94,94,89,94,94,94,94,94,390,
+390,91,94,94,94,94,94,94,94,89,94,390,
+94,94,94,94,94,94,94,94,94,94,94,94,
+94,94,94,94,94,94,94,94,94,94,94,94,
+94,94,94,91,92,94,94,89,94,91,94,94,
+94,94,89,94,94,92,94,94,94,94,94,94,
+94,94,94,94,94,94,94,94,94,94,94,94,
+94,94,94,94,94,89,90,94,94,94,94,94,
+94,92,94,94,92,94,90,94,94,91,94,94,
+94,94,94,94,94,94,94,94,94,94,94,94
+</data>
+ </layer>
+ <layer id="2" name="background1" width="12" height="22">
+  <properties>
+   <property name="animated" type="bool" value="false"/>
+   <property name="nocollide" value="true"/>
+   <property name="tileset" value="frogger_atlas_01"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+526,528,0,526,528,0,526,528,0,526,527,528,
+576,578,0,576,578,0,576,578,0,576,577,578,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+233,233,233,233,233,233,233,233,233,233,233,233,
+258,258,258,258,258,258,258,258,258,258,258,258,
+258,258,258,258,258,258,258,258,258,258,258,258,
+258,258,258,258,258,258,258,258,258,258,258,258,
+258,258,258,258,258,258,258,258,258,258,258,258,
+258,258,258,258,258,258,258,258,258,258,258,258,
+258,258,258,258,258,258,258,258,258,258,258,258,
+283,283,283,283,283,283,283,283,283,283,283,283,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="objects">
+  <object id="23" name="water" type="water" x="0" y="80" width="480" height="320"/>
+  <object id="3" name="snake" type="A" x="0" y="560" width="80" height="80">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="4" name="snake" type="A" x="480" y="480" width="80" height="80">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="5" name="snake" type="A" x="-80" y="410" width="80" height="80">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="6" name="turtle" type="B" x="0" y="360" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="300"/>
+    <property name="startTime" type="int" value="0"/>
+   </properties>
+  </object>
+  <object id="7" name="turtle" type="B" x="200" y="360" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="8" name="turtle" type="B" x="440" y="360" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="9" name="log" type="0" x="0" y="320" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="10" name="log" type="0" x="160" y="320" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="11" name="log" type="0" x="440" y="320" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="12" name="log" type="1" x="80" y="280" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="13" name="log" type="1" x="320" y="280" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="14" name="turtle" type="A" x="0" y="240" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="15" name="turtle" type="A" x="240" y="240" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="300"/>
+    <property name="startTime" type="int" value="200"/>
+   </properties>
+  </object>
+  <object id="16" name="turtle" type="A" x="480" y="240" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="17" name="log" type="2" x="0" y="200" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="18" name="log" type="2" x="228" y="200" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="19" name="log" type="2" x="455" y="200" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="16"/>
+   </properties>
+  </object>
+  <object id="20" name="turtle" type="A" x="-39" y="160" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="21" name="turtle" type="A" x="184" y="160" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="300"/>
+    <property name="startTime" type="int" value="250"/>
+   </properties>
+  </object>
+  <object id="22" name="turtle" type="A" x="407" y="160" width="40" height="40">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="hideTimer" type="int" value="-1"/>
+    <property name="startTime" type="int" value="-1"/>
+   </properties>
+  </object>
+  <object id="2" name="start" type="player_start" x="200" y="640" width="40" height="40"/>
+  <object id="24" name="goal" type="goal" x="0" y="100" width="80" height="54"/>
+  <object id="25" name="goal" type="goal" x="120" y="101" width="80" height="54"/>
+  <object id="27" name="goal" type="goal" x="240" y="100" width="80" height="54"/>
+  <object id="28" name="goal" type="goal" x="361" y="100" width="115" height="54"/>
+ </objectgroup>
+</map>

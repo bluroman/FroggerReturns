@@ -314,6 +314,12 @@ class TiledLevel extends TiledMap
 				{
 					trace("Wrong Log Wrapping sprite type");
 				}
+			case "stone":
+				var stone = new SafeStone(x, y, Std.parseInt(o.properties.get("hideTimer")), Std.parseInt(o.properties.get("startTime")), 0x01, 0);
+				state.safeStoneGroup.add(stone);
+			case "alligator":
+				var alligator = new Alligator(x, y, Std.parseInt(o.properties.get("direction")), 1);
+				state.alligatorGroup.add(alligator);
 			case "snake":
 				var snake = new Snake(x, y, Std.parseInt(o.properties.get("direction")), 1);
 				state.snakeGroup.add(snake);
@@ -321,6 +327,17 @@ class TiledLevel extends TiledMap
 				var water = new FlxObject(x, y, o.width, o.height);
 				state.water = water;
 				state.water.ID = 0;
+			case "swamp":
+				var swamp = new FlxObject(x, y, o.width, o.height);
+				state.swamp = swamp;
+				state.swamp.ID = 1;
+			case "lava":
+				var lava = new FlxObject(x, y, o.width, o.height);
+				state.lava = lava;
+				state.lava.ID = 2;
+			case "home":
+				var home = new Home(x, y, Std.parseInt(o.properties.get("hideTimer")), Std.parseInt(o.properties.get("startTime")), 10);
+				state.homeGroup.add(home);
 			case "floor":
 				var floor = new FlxObject(x, y, o.width, o.height);
 			// state.floor = floor;

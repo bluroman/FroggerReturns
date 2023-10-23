@@ -38,5 +38,5 @@ class Reg
 	public static inline var INTERSTITIAL_ID_ANDROID:String = "ca-app-pub-6964194614288140/8511587241";
 	public static inline var REWARDED_ID_IOS:String = "ca-app-pub-6964194614288140/4643184958";
 	public static inline var REWARDED_ID_ANDROID:String = "ca-app-pub-6964194614288140/9633097226";
-	public static inline var FONT = "assets/data/NotoSansKR-Regular.ttf";
+	public static inline var FONT = "assets/fonts/NotoSansKR-Regular.ttf";
 }

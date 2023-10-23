@@ -2,7 +2,7 @@
 <data>	
 	<!-- <include id="_ui_globals"/>
 	<include id="popup_demo"/> -->
-	<definition id="KenPixel" font="KenPixel_Mini_Square" size="18" color="0xffffff" align="center"/>
+	<definition id="KenPixel" font="NotoSansKR-Regular.ttf" size="18" color="0xffffff" align="center"/>
 	<definition id="button" width="50" height="25">		
 		<text use_def="KenPixel" color="0xffffff">
 			<color id="over" value="0xffff00"/>

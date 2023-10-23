@@ -32,6 +32,7 @@ class PlayState extends BaseState
 	public var homeGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var blueFrogGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var snakeGroup:FlxTypedSpriteGroup<FlxSprite>;
+	public var safeStoneGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var goalGroup:FlxGroup;
 	public var actorSpeed:Float = 1.0;
 
@@ -46,6 +47,8 @@ class PlayState extends BaseState
 	private var nextLife:Int = 5000;
 
 	public var water:FlxObject;
+	public var swamp:FlxObject;
+	public var lava:FlxObject;
 
 	var sndWave:FlxSound;
 	var sndAlligator:FlxSound;
@@ -72,8 +75,9 @@ class PlayState extends BaseState
 		homeGroup = new FlxTypedSpriteGroup<FlxSprite>();
 		blueFrogGroup = new FlxTypedSpriteGroup<FlxSprite>();
 		snakeGroup = new FlxTypedSpriteGroup<FlxSprite>();
+		safeStoneGroup = new FlxTypedSpriteGroup<FlxSprite>();
 		goalGroup = new FlxGroup();
-		level = new TiledLevel("assets/tiled/water.tmx", this);
+		level = new TiledLevel("assets/tiled/frogger2_test1.tmx", this);
 
 		// Add backgrounds
 		add(level.backgroundLayer);
@@ -88,6 +92,7 @@ class PlayState extends BaseState
 		add(blueFrogGroup);
 		add(snakeGroup);
 		add(goalGroup);
+		add(safeStoneGroup);
 
 		// Add static images
 		add(level.imagesLayer);
@@ -431,6 +436,19 @@ class PlayState extends BaseState
 		}
 	}
 
+	private function stoneCollision(target:TimerSprite, player:Frog):Void
+	{
+		// trace("##############Stone Collision###########");
+		if (target.get_isActive())
+		{
+			float(target, player);
+		}
+		else if (!player.isMoving)
+		{
+			waterCollision();
+		}
+	}
+
 	override public function update(elapsed:Float)
 	{
 		if (gameState == GameStates.GAME_OVER)
@@ -549,12 +567,12 @@ class PlayState extends BaseState
 			}
 
 			FlxG.overlap(turtleGroupNew, player, turtleFloat);
-			// FlxG.overlap(homeGroup, player, baseCollision);
-			// FlxG.overlap(alligatorGroup, player, float);
-			// FlxG.overlap(safeStoneGroup, player, stoneCollision);
+			FlxG.overlap(homeGroup, player, baseCollision);
+			FlxG.overlap(alligatorGroup, player, float);
+			FlxG.overlap(safeStoneGroup, player, stoneCollision);
 			FlxG.overlap(water, player, liquidCollision);
-			// FlxG.overlap(swamp, player, liquidCollision);
-			// FlxG.overlap(lava, player, liquidCollision);
+			FlxG.overlap(swamp, player, liquidCollision);
+			FlxG.overlap(lava, player, liquidCollision);
 
 			if (timer == 0 && gameState == GameStates.PLAYING)
 			{

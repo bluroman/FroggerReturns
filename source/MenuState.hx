@@ -1,5 +1,6 @@
 package;
 
+import extension.devicelang.DeviceLanguage;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -43,15 +44,33 @@ class MenuState extends BaseState
 	private var _title:FlxSprite;
 	private var timer:FlxTimer;
 	private var _background:FlxSprite;
+	var _locale:String;
 
 	// private var _btnLeaderboard:FlxButton; // button to go to main menu
 
 	override public function create():Void
 	{
+		var lang:String = DeviceLanguage.getLang();
+		trace("Device Language Detected: " + lang);
+		switch (lang)
+		{
+			case "ko": // ko-KR
+				_locale = "ko-KR";
+			case "en": // en-US
+				_locale = "en-US";
+			case "ja": // ja-JP
+				_locale = "ja-JP";
+			case "es": // es-ES
+				_locale = "es-ES";
+			case "fr": // fr-FR
+				_locale = "fr-FR";
+			default: // otherwise
+				_locale = "en-US";
+		}
 		if (Main.tongue == null)
 		{
 			Main.tongue = new FireTongueEx();
-			Main.tongue.initialize({locale: "ko-KR"});
+			Main.tongue.initialize({locale: _locale});
 			FlxUIState.static_tongue = Main.tongue;
 		}
 
@@ -75,33 +94,8 @@ class MenuState extends BaseState
 		#if ADS
 		Admob.status.addEventListener(AdmobEvent.INIT_OK, onInitOk);
 		Admob.init();
-		// AdMob.enableTestingAds();
-
-		// if your app is for children and you want to enable the COPPA policy
-		// you need to call tagForChildDirectedTreatment(), before calling INIT.
-		// Admob.tagForChildDirectedTreatment();
-
-		// If you want to get instertitial events (LOADING, LOADED, CLOSED, DISPLAYING, ETC), provide
-		// some callback function for this.
-		// Admob.onInterstitialEvent = onInterstitialEvent;
-
-		// then call init with Android and iOS banner IDs in the main method.
-		// parameters are (bannerId:String, interstitialId:String, gravityMode:GravityMode).
-		// if you don't have the bannerId and interstitialId, go to www.google.com/ads/admob to create them.
-
-		// Admob.initAndroid("ca-app-pub-6964194614288140/8538635264", "ca-app-pub-6964194614288140/8511587241", [
-		// 	"ca-app-pub-6964194614288140/9633097226",
-		// 	"ca-app-pub-6964194614288140/9633097226"
-		// ], GravityMode.BOTTOM); // may also be GravityMode.TOP
-		// Admob.initIOS("ca-app-pub-6964194614288140/7785218114", "ca-app-pub-6964194614288140/8331302582", [
-		// 	"ca-app-pub-6964194614288140/4643184958",
-		// 	"ca-app-pub-6964194614288140/4643184958"
-		// ], GravityMode.BOTTOM); // may also be GravityMode.TOP
-		// if (Reg.playCount % 2 == 1)
-		// {
-		// 	trace("##################Show Interstitial#################");
-		// 	AdMob.showInterstitial(0);
-		// }
+		// Admob.status.addEventListener(AdmobEvent.CONSENT_FAIL, onConsentFail); //to be later
+		// Admob.showPrivacyOptionsForm();
 		#end
 		FlxG.state.bgColor = 0x000000;
 
@@ -165,6 +159,12 @@ class MenuState extends BaseState
 	{
 		trace(ae.type, ae.data);
 		Admob.setVolume(0);
+	}
+
+	private function onConsentFail(ae:AdmobEvent)
+	{
+		trace(ae.type, ae.data);
+		// Admob.setVolume(0);
 	}
 	#end
 

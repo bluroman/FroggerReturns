@@ -274,7 +274,7 @@ class PlayState extends BaseState
 	{
 		gameState = GameStates.GAME_OVER;
 
-		hud.showGameMessage("GAME OVER");
+		hud.showGameMessage(Main.tongue.get("$TITLE_GAMEOVER", "ui"));
 
 		hideGameMessageDelay = 100;
 

@@ -67,8 +67,8 @@ class ScoreState extends BaseState
 
 		highScored = scoreboard.canSubmitScore(playerData);
 
-		textItem = new FlxText(0, FlxG.height / 7, FlxG.width, "SCORE RANKING");
-		textItem.setFormat(null, 15, 0xd8d94a, "center", 0);
+		textItem = new FlxText(0, FlxG.height / 7, FlxG.width, Main.tongue.get("$TITLE_SCORERANKING", "ui"));
+		textItem.setFormat(Reg.FONT, 15, 0xd8d94a, "center", 0);
 		add(textItem);
 
 		// find out if score can be inserted at the beginning
@@ -159,19 +159,19 @@ class ScoreState extends BaseState
 			add(textItem);
 			ypos += 20;
 		}
-		_btnMainMenu = new FlxButton(0, 0, "Main Menu", goMainMenu);
+		_btnMainMenu = new FlxButton(0, 0, Main.tongue.get("$TITLE_MAINMENU", "ui"), goMainMenu);
 		_btnMainMenu.loadGraphic("assets/images/button01.png", 120, 36);
 		_btnMainMenu.screenCenter();
 		_btnMainMenu.onUp.sound = FlxG.sound.load("Click");
-		_btnMainMenu.label.setFormat(null, 15, FlxColor.WHITE, "center");
+		_btnMainMenu.label.setFormat(Reg.FONT, 15, FlxColor.WHITE, "center");
 		add(_btnMainMenu);
 		#if mobile
-		_btnLeaderboadrdMenu = new FlxButton(0, 0, "Leaderboard", goLeaderboard);
+		_btnLeaderboadrdMenu = new FlxButton(0, 0, Main.tongue.get("$TITLE_LEADERBOARD", "ui"), goLeaderboard);
 		_btnLeaderboadrdMenu.loadGraphic("assets/images/button02.png", 150, 40);
 		_btnLeaderboadrdMenu.screenCenter();
 		_btnLeaderboadrdMenu.y += 80;
 		_btnLeaderboadrdMenu.onUp.sound = FlxG.sound.load("Click");
-		_btnLeaderboadrdMenu.label.setFormat(null, 18, FlxColor.WHITE, "center");
+		_btnLeaderboadrdMenu.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
 		add(_btnLeaderboadrdMenu);
 		#end
 		if (highScored)

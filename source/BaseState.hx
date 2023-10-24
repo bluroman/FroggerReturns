@@ -38,14 +38,13 @@ class BaseState extends FlxState
 		trace("0th score:" + scoreboard.getScore(0).score);
 
 		// Create Text for title, credits, and score
-		highscoreLabel = new FlxText((FlxG.width - 200) * .5, 0, 200, "HI-SCORE").setFormat("assets/data/smallfont.ttf", 18, 0xffffff, "center");
+		highscoreLabel = new FlxText((FlxG.width - 200) * .5, 0, 200, Main.tongue.get("$TITLE_HIGHSCORE", "ui")).setFormat(Reg.FONT, 18, 0xffffff, "center");
 		highscoreTxt = new FlxText(highscoreLabel.x, highscoreLabel.y + highscoreLabel.height, 200,
-			Std.string(scoreboard.getScore(0).score)).setFormat("assets/data/smallfont.ttf", 18, 0xffe00000, "center");
-		scoreLabel = new FlxText(50, 0, 100, "Score").setFormat("assets/data/smallfont.ttf", 18, 0xffffff, "right");
-		scoreTxt = new FlxText(0, scoreLabel.height, 150, Std.string(Reg.score)).setFormat("assets/data/smallfont.ttf", 18, 0xffe00000, "right");
-		levelLabel = new FlxText(480 - 170, 0, 100, "Level").setFormat("assets/data/smallfont.ttf", 18, 0xffffff, "right");
-		levelTxt = new FlxText(levelLabel.x - 50, levelLabel.height, 150,
-			Std.string(Reg.level)).setFormat("assets/data/smallfont.ttf", 18, 0xffe00000, "right");
+			Std.string(scoreboard.getScore(0).score)).setFormat(Reg.FONT, 18, 0xffe00000, "center");
+		scoreLabel = new FlxText(50, 0, 100, Main.tongue.get("$TITLE_SCORE", "ui")).setFormat(Reg.FONT, 18, 0xffffff, "right");
+		scoreTxt = new FlxText(0, scoreLabel.height, 150, Std.string(Reg.score)).setFormat(Reg.FONT, 18, 0xffe00000, "right");
+		levelLabel = new FlxText(480 - 170, 0, 100, Main.tongue.get("$TITLE_LEVEL", "ui")).setFormat(Reg.FONT, 18, 0xffffff, "right");
+		levelTxt = new FlxText(levelLabel.x - 50, levelLabel.height, 150, Std.string(Reg.level)).setFormat(Reg.FONT, 18, 0xffe00000, "right");
 
 		_topScoreBoard.add(highscoreLabel);
 		_topScoreBoard.add(highscoreTxt);

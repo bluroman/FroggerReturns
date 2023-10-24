@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Frogger" file="Frogger" main="Main" version="1.8.0" company="BluromanGames" build-number="38" package="com.bluroman.frogger"/>
+	<app title="Frogger" file="Frogger" main="Main" version="1.9.0" company="BluromanGames" build-number="39" package="com.bluroman.frogger"/>
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -39,7 +39,7 @@
     <set name="google-play-game-services" value="17.0.0" /> -->
     <setenv name="GOOGLE_PLAY_GAMES_ID" value="495045865037" /> <!-- REPLACE THIS WITH YOUR GOOGLE PLAY GAMES ID! -->
 
-    <!-- <setenv name="ANDROID_GRADLE_TASK" value=":app:bundleRelease" /> -->
+    <setenv name="ANDROID_GRADLE_TASK" value=":app:bundleRelease" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 

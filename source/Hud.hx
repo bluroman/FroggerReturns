@@ -50,7 +50,8 @@ class Hud extends FlxTypedSpriteGroup<FlxSprite>
 		add(messageBG);
 
 		// Message text
-		messageText = new FlxText((480 * .5) - (150 * .5), calculateRow(8) + 5 + 4, 150, "TIME 99").setFormat(null, 18, 0xffff00, "center");
+		messageText = new FlxText((480 * .5) - (150 * .5), calculateRow(8) + 5 + 4, 150,
+			Main.tongue.get("$TITLE_MESSAGE_DEFAULT", "ui")).setFormat(Reg.FONT, 18, 0xffff00, "center");
 		// gameMessageGroup.visible = false;
 		messageBG.visible = false;
 		messageText.visible = false;
@@ -60,13 +61,13 @@ class Hud extends FlxTypedSpriteGroup<FlxSprite>
 		enterUserNameBG.makeGraphic(480, 40, 0xff000000);
 		add(enterUserNameBG);
 
-		enterYourName = new FlxText(0, calculateRow(8) + 4, 240, "ENTER YOUR NAME:").setFormat(null, 18, 0xffff00, "left");
+		enterYourName = new FlxText(0, calculateRow(8) + 4, 240, Main.tongue.get("$TITLE_MESSAGE_INPUT", "ui")).setFormat(Reg.FONT, 18, 0xffff00, "left");
 		// enterUserNameGroup.visible = false;
 		enterUserNameBG.visible = false;
 		enterYourName.visible = false;
 		add(enterYourName);
 		// Create Time text
-		timeTxt = new FlxText(FlxG.width - 70, LIFE_Y, 60, "TIME").setFormat(null, 14, 0xffff00, "right");
+		timeTxt = new FlxText(FlxG.width - 70, LIFE_Y, 60, Main.tongue.get("$TITLE_MESSAGE_TIME", "ui")).setFormat(Reg.FONT, 14, 0xffff00, "right");
 		add(timeTxt);
 
 		// Create timer graphic
@@ -86,7 +87,7 @@ class Hud extends FlxTypedSpriteGroup<FlxSprite>
 		submitButton.makeGraphic(40, 40, FlxColor.BLACK);
 		// submitButton.color = 0x0000ff;
 		submitButton.label.color = 0xffffff;
-		submitButton.label.setFormat(null, 18, 0xffffff, "center");
+		submitButton.label.setFormat(Reg.FONT, 18, 0xffffff, "center");
 		// submitButton.y = calculateRow(8) * oflScaleY;
 		// submitButton.width = 40;
 		// submitButton.height = 40;

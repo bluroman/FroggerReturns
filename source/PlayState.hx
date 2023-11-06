@@ -25,6 +25,7 @@ class PlayState extends BaseState
 	public var coins:FlxGroup;
 	public var gameState:GameStates;
 	public var player:Frog;
+	public var boundingBox:FlxSprite;
 	public var carGroupNew:FlxTypedSpriteGroup<FlxSprite>;
 	public var alligatorGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var turtleGroupNew:FlxTypedSpriteGroup<FlxSprite>;
@@ -34,6 +35,7 @@ class PlayState extends BaseState
 	public var snakeGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var safeStoneGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var goalGroup:FlxGroup;
+	public var lavaGroup:FlxTypedSpriteGroup<FlxSprite>;
 	public var actorSpeed:Float = 1.0;
 
 	private var isRewardedLoaded:Bool = false;
@@ -46,10 +48,10 @@ class PlayState extends BaseState
 	private var lastLifeScore:Int = 0;
 	private var nextLife:Int = 5000;
 
-	public var water:FlxObject;
+	public var water:FlxObject = null;
 	public var swamp:FlxObject;
-	public var lava:FlxObject;
 
+	// public var lava:FlxObject;
 	var sndWave:FlxSound;
 	var sndAlligator:FlxSound;
 	var sndLava:FlxSound;
@@ -77,8 +79,20 @@ class PlayState extends BaseState
 		snakeGroup = new FlxTypedSpriteGroup<FlxSprite>();
 		safeStoneGroup = new FlxTypedSpriteGroup<FlxSprite>();
 		goalGroup = new FlxGroup();
-		level = new TiledLevel("assets/tiled/frogger2_test1.tmx", this);
-
+		lavaGroup = new FlxTypedSpriteGroup<FlxSprite>();
+		switch (Reg.current_level)
+		{
+			case 0:
+				level = new TiledLevel(Reg.LEVEL_ROADS, this);
+			case 1:
+				level = new TiledLevel(Reg.LEVEL_WATER, this);
+			case 2:
+				level = new TiledLevel(Reg.LEVEL_CAVE, this);
+			case 3:
+				level = new TiledLevel(Reg.LEVEL_CLASSIC, this);
+			default:
+				level = new TiledLevel(Reg.LEVEL_CLASSIC, this);
+		}
 		// Add backgrounds
 		add(level.backgroundLayer);
 
@@ -92,6 +106,7 @@ class PlayState extends BaseState
 		add(blueFrogGroup);
 		add(snakeGroup);
 		add(goalGroup);
+		add(lavaGroup);
 		add(safeStoneGroup);
 
 		// Add static images
@@ -102,6 +117,7 @@ class PlayState extends BaseState
 
 		// Add foreground tiles after adding level objects, so these tiles render on top of player
 		add(level.foregroundTiles);
+		// add(boundingBox);
 		actorSpeed = 1.0;
 
 		// Set up main variable properties
@@ -111,6 +127,9 @@ class PlayState extends BaseState
 		timeAlmostOverWarning = Reg.TIMER_BAR_WIDTH * .7;
 		waterY = TILE_SIZE * 8;
 		Reg.score = 0;
+		Reg.score_roads = 0;
+		Reg.score_water = 0;
+		Reg.scroe_caves = 0;
 
 		hud = new Hud();
 		add(hud);
@@ -141,6 +160,7 @@ class PlayState extends BaseState
 		trace("Car Group: " + carGroupNew.length);
 		trace("Log Group: " + logGroupNew.length);
 		trace("Turtle Group: " + turtleGroupNew.length);
+		trace("Lava Group: " + lavaGroup.length);
 		trace("PlayState display width: " + Lib.current.stage.stageWidth + " display height: " + Lib.current.stage.stageHeight);
 	}
 
@@ -300,6 +320,42 @@ class PlayState extends BaseState
 		}
 	}
 
+	private function goalCollision(target:FlxObject, player:Frog)
+	{
+		var timeLeftOver:Int = Math.round(timer / FlxG.updateFramerate);
+		trace("GOAL Collisions TimeLeftOver: " + timeLeftOver);
+		safeFrogs++;
+		// Increment the score based on the time left
+		if (Reg.current_level == 0)
+			Reg.score_roads += timeLeftOver * ScoreValues.TIME_BONUS;
+		else if (Reg.current_level == 1)
+			Reg.score_water += timeLeftOver * ScoreValues.TIME_BONUS;
+		else if (Reg.current_level == 2)
+			Reg.scroe_caves += timeLeftOver * ScoreValues.TIME_BONUS;
+		else if (Reg.current_level == 3)
+			Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+		// Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+		FlxG.sound.play("Bonus");
+		trace("Safe frogs:" + safeFrogs + "Group:" + homeGroup.length);
+
+		// Reguardless if the base was empty or occupied we still display the time it took to get there
+		hud.showGameMessage("TIME " + Std.string(gameTime / FlxG.updateFramerate - timeLeftOver));
+		hideGameMessageDelay = 200;
+
+		// Test to see if we have all the frogs, if so then level has been completed. If not restart.
+		if (safeFrogs == 5)
+		{
+			levelComplete();
+		}
+		else
+		{
+			hideGameMessageDelay = 50;
+			gameState = GameStates.RESTART;
+			player.restart();
+			// restart();
+		}
+	}
+
 	private function baseCollision(target:Home, player:Frog):Void
 	{
 		var timeLeftOver:Int = Math.round(timer / FlxG.updateFramerate);
@@ -313,7 +369,14 @@ class PlayState extends BaseState
 				// Flag the target as success to show it is occupied now
 				target.success();
 				// Increment the score based on the time left
-				Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+				if (Reg.current_level == 0)
+					Reg.score_roads += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 1)
+					Reg.score_water += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 2)
+					Reg.scroe_caves += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 3)
+					Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
 				FlxG.sound.play("Bonus");
 			case Home.BONUS:
 				// Increment number of frogs saved
@@ -321,9 +384,26 @@ class PlayState extends BaseState
 				// Flag the target as success to show it is occupied now
 				target.success();
 				// Increment the score based on the time left
-				Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+				if (Reg.current_level == 0)
+					Reg.score_roads += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 1)
+					Reg.score_water += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 2)
+					Reg.scroe_caves += timeLeftOver * ScoreValues.TIME_BONUS;
+				else if (Reg.current_level == 3)
+					Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+
 				if (target.mode == Home.BONUS)
-					Reg.score += ScoreValues.HOME_BONUS;
+				{
+					if (Reg.current_level == 0)
+						Reg.score_roads += timeLeftOver * ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 1)
+						Reg.score_water += timeLeftOver * ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 2)
+						Reg.scroe_caves += timeLeftOver * ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 3)
+						Reg.score += timeLeftOver * ScoreValues.HOME_BONUS;
+				}
 				FlxG.sound.play("Bonus");
 			case Home.NO_BONUS:
 				// waterCollision();
@@ -354,7 +434,15 @@ class PlayState extends BaseState
 	private function levelComplete():Void
 	{
 		// Increment the score based on
-		Reg.score += ScoreValues.FINISH_LEVEL;
+		if (Reg.current_level == 0)
+			Reg.score_roads += ScoreValues.FINISH_LEVEL;
+		else if (Reg.current_level == 1)
+			Reg.score_water += ScoreValues.FINISH_LEVEL;
+		else if (Reg.current_level == 2)
+			Reg.scroe_caves += ScoreValues.FINISH_LEVEL;
+		else if (Reg.current_level == 3)
+			Reg.score += ScoreValues.FINISH_LEVEL;
+		// Reg.score += ScoreValues.FINISH_LEVEL;
 
 		// Change game state to let system know a level has been completed
 		gameState = GameStates.LEVEL_OVER;
@@ -401,6 +489,23 @@ class PlayState extends BaseState
 			// FlxG.play(GameAssets.FroggerPlunkSound);
 			FlxG.sound.play("Plunk");
 			killPlayer(true);
+		}
+	}
+
+	private function lavaCollision(target:FlxObject, player:Frog):Void
+	{
+		trace("###############Lava Collisions#############");
+		trace("Player Position: y: " + player.y + " x: " + player.x);
+		if (!sndLava.playing)
+			sndLava.play(true);
+
+		if (!playerIsFloating)
+			waterCollision();
+
+		if ((player.x > FlxG.width - player.frameWidth / 2) || (player.x < -player.frameWidth / 2))
+			// if(!player.isOnScreen())
+		{
+			waterCollision();
 		}
 	}
 
@@ -488,6 +593,13 @@ class PlayState extends BaseState
 			// trace("Player Position Y:" + player.y);
 			// Reset floating flag for the player.
 			playerIsFloating = false;
+			// for (inLava in lavaGroup)
+			// {
+			// 	if (FlxG.pixelPerfectOverlap(inLava, player))
+			// 	{
+			// 		lavaCollision(inLava, player);
+			// 	}
+			// }
 
 			for (newCar in carGroupNew)
 			{
@@ -517,39 +629,53 @@ class PlayState extends BaseState
 					}
 				}
 			}
-			if (FlxG.overlap(player, goalGroup))
-			{
-				var timeLeftOver:Int = Math.round(timer / FlxG.updateFramerate);
-				trace("GOAL Collisions TimeLeftOver: " + timeLeftOver);
-				safeFrogs++;
-				// Increment the score based on the time left
-				Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
-				FlxG.sound.play("Bonus");
-				trace("Safe frogs:" + safeFrogs + "Group:" + homeGroup.length);
+			// if (FlxG.overlap(player, goalGroup))
+			// {
+			// 	var timeLeftOver:Int = Math.round(timer / FlxG.updateFramerate);
+			// 	trace("GOAL Collisions TimeLeftOver: " + timeLeftOver);
+			// 	safeFrogs++;
+			// 	// Increment the score based on the time left
+			// 	if (Reg.current_level == 0)
+			// 		Reg.score_roads += timeLeftOver * ScoreValues.TIME_BONUS;
+			// 	else if (Reg.current_level == 1)
+			// 		Reg.score_water += timeLeftOver * ScoreValues.TIME_BONUS;
+			// 	else if (Reg.current_level == 2)
+			// 		Reg.scroe_caves += timeLeftOver * ScoreValues.TIME_BONUS;
+			// 	else if (Reg.current_level == 3)
+			// 		Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+			// 	// Reg.score += timeLeftOver * ScoreValues.TIME_BONUS;
+			// 	FlxG.sound.play("Bonus");
+			// 	trace("Safe frogs:" + safeFrogs + "Group:" + homeGroup.length);
 
-				// Reguardless if the base was empty or occupied we still display the time it took to get there
-				hud.showGameMessage("TIME " + Std.string(gameTime / FlxG.updateFramerate - timeLeftOver));
-				hideGameMessageDelay = 200;
+			// 	// Reguardless if the base was empty or occupied we still display the time it took to get there
+			// 	hud.showGameMessage("TIME " + Std.string(gameTime / FlxG.updateFramerate - timeLeftOver));
+			// 	hideGameMessageDelay = 200;
 
-				// Test to see if we have all the frogs, if so then level has been completed. If not restart.
-				if (safeFrogs == 5)
-				{
-					levelComplete();
-				}
-				else
-				{
-					hideGameMessageDelay = 50;
-					gameState = GameStates.RESTART;
-					player.restart();
-					// restart();
-				}
-			}
+			// 	// Test to see if we have all the frogs, if so then level has been completed. If not restart.
+			// 	if (safeFrogs == 5)
+			// 	{
+			// 		levelComplete();
+			// 	}
+			// 	else
+			// 	{
+			// 		hideGameMessageDelay = 50;
+			// 		gameState = GameStates.RESTART;
+			// 		player.restart();
+			// 		// restart();
+			// 	}
+			// }
 			for (blueFrog in blueFrogGroup)
 			{
 				if (FlxG.pixelPerfectOverlap(blueFrog, player))
 				{
-					Reg.score += ScoreValues.HOME_BONUS;
-
+					if (Reg.current_level == 0)
+						Reg.score_roads += ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 1)
+						Reg.score_water += ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 2)
+						Reg.scroe_caves += ScoreValues.HOME_BONUS;
+					else if (Reg.current_level == 3)
+						Reg.score += ScoreValues.HOME_BONUS;
 					FlxG.sound.play("Bonus");
 					blueFrog.kill();
 				}
@@ -570,9 +696,21 @@ class PlayState extends BaseState
 			FlxG.overlap(homeGroup, player, baseCollision);
 			FlxG.overlap(alligatorGroup, player, float);
 			FlxG.overlap(safeStoneGroup, player, stoneCollision);
-			FlxG.overlap(water, player, liquidCollision);
-			FlxG.overlap(swamp, player, liquidCollision);
-			FlxG.overlap(lava, player, liquidCollision);
+			FlxG.overlap(lavaGroup, player, lavaCollision);
+			// for (inLava in lavaGroup)
+			// {
+			// 	if (FlxG.pixelPerfectOverlap(inLava, player))
+			// 	{
+			// 		lavaCollision(inLava, player);
+			// 	}
+			// }
+			if (water != null)
+				FlxG.overlap(water, player, liquidCollision);
+			if (swamp != null)
+				FlxG.overlap(swamp, player, liquidCollision);
+			// if (lava != null)
+			// 	FlxG.overlap(lava, player, liquidCollision);
+			FlxG.overlap(goalGroup, player, goalCollision);
 
 			if (timer == 0 && gameState == GameStates.PLAYING)
 			{
@@ -602,7 +740,20 @@ class PlayState extends BaseState
 				hideGameMessageDelay = -1;
 				hud.hideGameMessage();
 			}
-			scoreTxt.text = Std.string(Reg.score);
+			switch (Reg.current_level)
+			{
+				case 0:
+					scoreTxt.text = Std.string(Reg.score_roads);
+				case 1:
+					scoreTxt.text = Std.string(Reg.score_water);
+				case 2:
+					scoreTxt.text = Std.string(Reg.scroe_caves);
+				case 3:
+					scoreTxt.text = Std.string(Reg.score);
+				default:
+					scoreTxt.text = Std.string(Reg.score);
+			}
+			// scoreTxt.text = Std.string(Reg.score);
 		}
 		else if (gameState == GameStates.RESTART)
 		{
@@ -637,13 +788,27 @@ class PlayState extends BaseState
 				hideGameMessageDelay -= 1; // FlxG.elapsed;
 			}
 		}
+		var tmpScore;
+		switch (Reg.current_level)
+		{
+			case 0:
+				tmpScore = Reg.score_roads;
+			case 1:
+				tmpScore = Reg.score_water;
+			case 2:
+				tmpScore = Reg.scroe_caves;
+			case 3:
+				tmpScore = Reg.score;
+			default:
+				tmpScore = Reg.score;
+		}
 
-		if (lastLifeScore != Reg.score && Reg.score % nextLife == 0)
+		if (lastLifeScore != tmpScore && tmpScore % nextLife == 0)
 		{
 			if (hud.get_totalLives() < 5)
 			{
 				hud.addLife();
-				lastLifeScore = Reg.score;
+				lastLifeScore = tmpScore;
 
 				hud.showGameMessage("1-UP");
 				hideGameMessageDelay = 200;

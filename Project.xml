@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Frogger" file="Frogger" main="Main" version="1.9.0" company="BluromanGames" build-number="39" package="com.bluroman.frogger"/>
+	<app title="Frogger" file="Frogger" main="Main" version="2.0.0" company="BluromanGames" build-number="40" package="com.bluroman.frogger"/>
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -15,7 +15,7 @@
     <!-- <setenv name="NSBluetoothAlwaysUsageDescription" value="App would like to use your bluetooth for communication purposes" if="ios"/> -->
 
     <!-- <android minimum-sdk-version="23" target-sdk-version="30" /> -->
-    <android minimum-sdk-version="23" target-sdk-version="33" if="android" />
+    <android minimum-sdk-version="23" target-sdk-version="34" if="android" />
 
     <certificate path="bluromangames.keystore" alias="bluroman" password="nam2363" if="android" />
     <config:android gradle-version="6.7.1" if="android" />
@@ -73,7 +73,9 @@
 	<haxelib name="flixel-ui" />
     <haxelib name="firetongue"/>
     <haxelib name="devicelanguage"/>
-    <!--<haxelib name="zerolib" />-->
+    <haxelib name="zerolib-flixel" />
+
+    <haxelib name="zerolib" />
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape" />-->

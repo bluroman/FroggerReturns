@@ -11,6 +11,6 @@ class Main extends Sprite
 	{
 		super();
 		// addChild(new FlxGame(768, 1024, MenuState, true));
-		addChild(new FlxGame(480, 800, MenuState, true));
+		addChild(new FlxGame(480, 800, BootState, true));
 	}
 }

@@ -52,6 +52,29 @@ class ScoreState extends BaseState
 	override public function create():Void
 	{
 		super.create();
+		switch (Reg.current_level)
+		{
+			case 0:
+				playerScore = Reg.score_roads;
+				scores = scoreboard1.get_scores();
+				highScored = scoreboard1.canSubmitScore(playerData);
+			case 1:
+				playerScore = Reg.score_water;
+				scores = scoreboard2.get_scores();
+				highScored = scoreboard2.canSubmitScore(playerData);
+			case 2:
+				playerScore = Reg.scroe_caves;
+				scores = scoreboard3.get_scores();
+				highScored = scoreboard3.canSubmitScore(playerData);
+			case 3:
+				playerScore = Reg.score;
+				scores = scoreboard.get_scores();
+				highScored = scoreboard.canSubmitScore(playerData);
+			default:
+				playerScore = Reg.score;
+				scores = scoreboard.get_scores();
+				highScored = scoreboard.canSubmitScore(playerData);
+		}
 
 		// FlxG.mouse.show();
 		// if (FlxG.sound.music == null) // don't restart the music if it's alredy playing
@@ -59,13 +82,13 @@ class ScoreState extends BaseState
 		FlxG.sound.playMusic("Score", 1, true);
 		// }
 
-		scores = scoreboard.get_scores();
+		// scores = scoreboard.get_scores();
 
 		newInitials = [];
 		// playerData.score = playerScore;
 		// playerData.name = "Hoon";
 
-		highScored = scoreboard.canSubmitScore(playerData);
+		// highScored = scoreboard.canSubmitScore(playerData);
 
 		textItem = new FlxText(0, FlxG.height / 7, FlxG.width, Main.tongue.get("$TITLE_SCORERANKING", "ui"));
 		textItem.setFormat(Reg.FONT, 15, 0xd8d94a, "center", 0);
@@ -91,7 +114,7 @@ class ScoreState extends BaseState
 			/*if (highScored)
 					break;
 				else */
-			if (score.score <= Reg.score)
+			if (score.score <= playerScore)
 			{
 				// score = {score:Reg.score, name:""};
 				score = playerData;
@@ -160,14 +183,14 @@ class ScoreState extends BaseState
 			ypos += 20;
 		}
 		_btnMainMenu = new FlxButton(0, 0, Main.tongue.get("$TITLE_MAINMENU", "ui"), goMainMenu);
-		_btnMainMenu.loadGraphic("assets/images/button01.png", 120, 36);
+		_btnMainMenu.loadGraphic("assets/gfx/ui/BtnDarkGray.png", 120, 48);
 		_btnMainMenu.screenCenter();
 		_btnMainMenu.onUp.sound = FlxG.sound.load("Click");
-		_btnMainMenu.label.setFormat(Reg.FONT, 15, FlxColor.WHITE, "center");
+		_btnMainMenu.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
 		add(_btnMainMenu);
 		#if mobile
 		_btnLeaderboadrdMenu = new FlxButton(0, 0, Main.tongue.get("$TITLE_LEADERBOARD", "ui"), goLeaderboard);
-		_btnLeaderboadrdMenu.loadGraphic("assets/images/button02.png", 150, 40);
+		_btnLeaderboadrdMenu.loadGraphic("assets/gfx/ui/BtnBlue.png", 120, 48);
 		_btnLeaderboadrdMenu.screenCenter();
 		_btnLeaderboadrdMenu.y += 80;
 		_btnLeaderboadrdMenu.onUp.sound = FlxG.sound.load("Click");
@@ -271,7 +294,20 @@ class ScoreState extends BaseState
 		// GooglePlayGames.getPlayerScore(Reg.GPG_LEADERBOARD);
 		#if mobile
 		#if GPG
-		GooglePlayGames.displayScoreboard(Reg.GPG_LEADERBOARD);
+		switch (Reg.current_level)
+		{
+			case 0:
+				GooglePlayGames.displayScoreboard(Reg.GPG_ROADS_LEADERBOARD);
+			case 1:
+				GooglePlayGames.displayScoreboard(Reg.GPG_WATER_LEADERBOARD);
+			case 2:
+				GooglePlayGames.displayScoreboard(Reg.GPG_CAVES_LEADERBOARD);
+			case 3:
+				GooglePlayGames.displayScoreboard(Reg.GPG_LEADERBOARD);
+			default:
+				GooglePlayGames.displayScoreboard(Reg.GPG_LEADERBOARD);
+		}
+		// GooglePlayGames.displayScoreboard(Reg.GPG_LEADERBOARD);
 		#end
 		#end
 	}

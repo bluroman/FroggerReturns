@@ -45,6 +45,10 @@ class MenuState extends BaseState
 	private var timer:FlxTimer;
 	private var _background:FlxSprite;
 	var _locale:String;
+	var _btnGotoRoadsLevel:FlxButton;
+	var _btnGotoWaterLevel:FlxButton;
+	var _btnGotoCavesLevel:FlxButton;
+	var _btnGotoClassicLevel:FlxButton;
 
 	// private var _btnLeaderboard:FlxButton; // button to go to main menu
 
@@ -97,7 +101,7 @@ class MenuState extends BaseState
 		// Admob.status.addEventListener(AdmobEvent.CONSENT_FAIL, onConsentFail); //to be later
 		// Admob.showPrivacyOptionsForm();
 		#end
-		FlxG.state.bgColor = 0x000000;
+		FlxG.state.bgColor = FlxColor.BROWN;
 
 		_background = new FlxSprite(0, 80);
 		_background.loadGraphic("assets/images/arcade_froggy2.png");
@@ -112,6 +116,44 @@ class MenuState extends BaseState
 		_title.velocity.y = TEXT_SPEED;
 		add(_title);
 
+		_btnGotoRoadsLevel = new FlxButton(0, 0, Main.tongue.get("$LEVEL_ROADS", "ui"), goLevelRoads);
+		_btnGotoRoadsLevel.loadGraphic("assets/gfx/ui/BtnOrange.png", 120, 48);
+		_btnGotoRoadsLevel.screenCenter();
+		// _btnGotoRoadsLevel.y += 80;
+		_btnGotoRoadsLevel.onUp.sound = FlxG.sound.load("Click");
+		_btnGotoRoadsLevel.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
+		add(_btnGotoRoadsLevel);
+
+		_btnGotoWaterLevel = new FlxButton(0, 0, Main.tongue.get("$LEVEL_WATER", "ui"), goLevelWater);
+		_btnGotoWaterLevel.loadGraphic("assets/gfx/ui/BtnAqua.png", 120, 48);
+		_btnGotoWaterLevel.screenCenter();
+		_btnGotoWaterLevel.y += 80;
+		_btnGotoWaterLevel.onUp.sound = FlxG.sound.load("Click");
+		_btnGotoWaterLevel.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
+		add(_btnGotoWaterLevel);
+
+		_btnGotoCavesLevel = new FlxButton(0, 0, Main.tongue.get("$LEVEL_CAVES", "ui"), goLevelCaves);
+		_btnGotoCavesLevel.loadGraphic("assets/gfx/ui/BtnRed.png", 120, 48);
+		_btnGotoCavesLevel.screenCenter();
+		_btnGotoCavesLevel.y += 160;
+		_btnGotoCavesLevel.onUp.sound = FlxG.sound.load("Click");
+		_btnGotoCavesLevel.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
+		add(_btnGotoCavesLevel);
+
+		_btnGotoClassicLevel = new FlxButton(0, 0, Main.tongue.get("$LEVEL_CLASSIC", "ui"), goLevelClassic);
+		_btnGotoClassicLevel.loadGraphic("assets/gfx/ui/BtnDarkGray.png", 120, 48);
+		_btnGotoClassicLevel.screenCenter();
+		_btnGotoClassicLevel.y += 240;
+		_btnGotoClassicLevel.onUp.sound = FlxG.sound.load("Click");
+		_btnGotoClassicLevel.label.setFormat(Reg.FONT, 18, FlxColor.WHITE, "center");
+		add(_btnGotoClassicLevel);
+		// var btn = new FlxButton(FlxG.width / 2, FlxG.height * 0.7, "CLICK HERE", function()
+		// {
+		// 	FlxG.switchState(new PlayInitState());
+		// });
+		// btn.x -= btn.width / 2;
+		// this.add(btn);
+
 		// _btnLeaderboard = new FlxButton(0, 0, "Leaderboard", displayLeaderboard);
 		// _btnLeaderboard.loadGraphic("assets/images/button01.png", 120, 36);
 		// _btnLeaderboard.screenCenter();
@@ -121,6 +163,42 @@ class MenuState extends BaseState
 		// openflTextFieldTest();
 
 		// add(new FlxText(20, FlxG.height - 30, FlxG.width - 40, "Original Frogger graphics and images by Konami. \nThis was created only for demonstration purposes").setFormat(null, 8, 0xffffffff, "center"));
+	}
+
+	private function goLevelRoads():Void
+	{
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			Reg.current_level = 0;
+			startGame();
+		});
+	}
+
+	private function goLevelWater():Void
+	{
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			Reg.current_level = 1;
+			startGame();
+		});
+	}
+
+	private function goLevelCaves():Void
+	{
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			Reg.current_level = 2;
+			startGame();
+		});
+	}
+
+	private function goLevelClassic():Void
+	{
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			Reg.current_level = 3;
+			startGame();
+		});
 	}
 
 	function playerScoreCallback(idScoreboard:String, score:Int):Void
@@ -227,7 +305,7 @@ class MenuState extends BaseState
 	{
 		trace(Main.tongue.get("$TITLE_START_LABEL", "ui"));
 		startLabel = new FlxText(0, 200, FlxG.width, Main.tongue.get("$TITLE_START_LABEL", "ui")).setFormat(Reg.FONT, 24, 0xffffffff, "center");
-		pressLabel = new FlxText(0, 400, FlxG.width, Main.tongue.get("$TITLE_PRESS_LABEL", "ui")).setFormat(Reg.FONT, 24, 0xd33bd1, "center");
+		pressLabel = new FlxText(0, 300, FlxG.width, Main.tongue.get("$TITLE_PRESS_LABEL", "ui")).setFormat(Reg.FONT, 24, 0xCECBB9, "center");
 		add(startLabel);
 		add(pressLabel);
 		// openflTextFieldTest();
@@ -264,32 +342,32 @@ class MenuState extends BaseState
 		if (_title.y > 100)
 			_title.velocity.y = 0;
 
-		#if FLX_TOUCH
-		// for (touch in FlxG.touches.list)
-		// {
-		// 	if (touch.justPressed && touch.overlaps(pressLabel))
-		// 	{
-		// 		Reg.level = 0;
-		// 		levelTxt.text = Std.string(Reg.level);
-		// 		FlxG.cameras.fade(0xff969867, 1, false, startGame);
-		// 	}
-		// }
+		// #if FLX_TOUCH
+		// // for (touch in FlxG.touches.list)
+		// // {
+		// // 	if (touch.justPressed && touch.overlaps(pressLabel))
+		// // 	{
+		// // 		Reg.level = 0;
+		// // 		levelTxt.text = Std.string(Reg.level);
+		// // 		FlxG.cameras.fade(0xff969867, 1, false, startGame);
+		// // 	}
+		// // }
 
-		if (FlxG.touches.justStarted().length > 0 && timer.finished)
-		{
-			Reg.level = 0;
-			levelTxt.text = Std.string(Reg.level);
-			FlxG.cameras.fade(0xff969867, 1, false, startGame);
-		}
-		#end
-		#if FLX_MOUSE
-		if (FlxG.mouse.justPressed && timer.finished)
-		{
-			Reg.level = 0;
-			levelTxt.text = Std.string(Reg.level);
-			FlxG.cameras.fade(0xff969867, 1, false, startGame);
-		}
-		#end
+		// if (FlxG.touches.justStarted().length > 0 && timer.finished)
+		// {
+		// 	Reg.level = 0;
+		// 	levelTxt.text = Std.string(Reg.level);
+		// 	FlxG.cameras.fade(0xff969867, 1, false, startGame);
+		// }
+		// #end
+		// #if FLX_MOUSE
+		// if (FlxG.mouse.justPressed && timer.finished)
+		// {
+		// 	Reg.level = 0;
+		// 	levelTxt.text = Std.string(Reg.level);
+		// 	FlxG.cameras.fade(0xff969867, 1, false, startGame);
+		// }
+		// #end
 
 		super.update(elapsed);
 	}

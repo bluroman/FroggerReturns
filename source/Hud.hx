@@ -43,7 +43,7 @@ class Hud extends FlxTypedSpriteGroup<FlxSprite>
 		bottomBackground.makeGraphic(FlxG.width, 200, 0x80000047);
 		add(bottomBackground);
 		lifeSprites = new Array();
-		createLives(3);
+		createLives(Reg.MAX_LIFE);
 		// Black background for message
 		messageBG = new FlxSprite((480 * .5) - (150 * .5), calculateRow(8) + 5);
 		messageBG.makeGraphic(150, 30, 0xff000000);
@@ -113,10 +113,32 @@ class Hud extends FlxTypedSpriteGroup<FlxSprite>
 		FlxG.removeChild(textfield);
 		var scoreState:ScoreState = new ScoreState();
 		scoreState.playerData.name = textfield.text;
-		scoreState.playerData.score = Reg.score;
+		switch (Reg.current_level)
+		{
+			case 0:
+				scoreState.playerData.score = Reg.score_roads;
+			case 1:
+				scoreState.playerData.score = Reg.score_water;
+			case 2:
+				scoreState.playerData.score = Reg.scroe_caves;
+			case 3:
+				scoreState.playerData.score = Reg.score;
+		}
+		// scoreState.playerData.score = Reg.score;
 		#if GPG
-		// to set current local score on scoreboard (Int data type).
-		GooglePlayGames.setScore(Reg.GPG_LEADERBOARD, scoreState.playerData.score);
+		switch (Reg.current_level)
+		{
+			case 0:
+				GooglePlayGames.setScore(Reg.GPG_ROADS_LEADERBOARD, scoreState.playerData.score);
+			case 1:
+				GooglePlayGames.setScore(Reg.GPG_WATER_LEADERBOARD, scoreState.playerData.score);
+			case 2:
+				GooglePlayGames.setScore(Reg.GPG_CAVES_LEADERBOARD, scoreState.playerData.score);
+			case 3:
+				GooglePlayGames.setScore(Reg.GPG_LEADERBOARD, scoreState.playerData.score);
+		}
+		// // to set current local score on scoreboard (Int data type).
+		// GooglePlayGames.setScore(Reg.GPG_LEADERBOARD, scoreState.playerData.score);
 		#end
 
 		FlxG.switchState(scoreState);

@@ -22,6 +22,8 @@ class Frog extends FlxSprite
 
 	public var isMoving:Bool;
 
+	var boundingBox:FlxSprite;
+
 	// public var touchControls:TouchControls;
 	// TODO this should probably extend Wrapping Sprite and override the off screen logic
 
@@ -32,11 +34,12 @@ class Frog extends FlxSprite
 	 * @param X start X
 	 * @param Y start Y
 	 */
-	public function new(X:Float, Y:Float)
+	public function new(X:Float, Y:Float, Bounds:FlxSprite)
 	{
 		super(X, Y);
 
 		// touchControls = null;
+		boundingBox = Bounds;
 
 		// Save the starting position to be used later when restarting
 		startPosition = new Point(X, Y);
@@ -218,7 +221,18 @@ class Frog extends FlxSprite
 
 					// Add to score for moving
 					// state._score += ScoreValues.STEP;
-					Reg.score += ScoreValues.STEP;
+					switch (Reg.current_level)
+					{
+						case 0:
+							Reg.score_roads += ScoreValues.STEP;
+						case 1:
+							Reg.score_water += ScoreValues.STEP;
+						case 2:
+							Reg.scroe_caves += ScoreValues.STEP;
+						case 3:
+							Reg.score += ScoreValues.STEP;
+					}
+					// Reg.score += ScoreValues.STEP;
 				}
 				else
 				{
@@ -261,6 +275,11 @@ class Frog extends FlxSprite
 
 		// Default object physics update
 		super.update(elapsed);
+		if (boundingBox != null)
+		{
+			boundingBox.x = x + (width / 2 - boundingBox.width / 2);
+			boundingBox.y = y + (height / 2 - boundingBox.height / 2);
+		}
 	}
 
 	/**

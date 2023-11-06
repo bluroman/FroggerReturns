@@ -16,6 +16,7 @@ import flixel.addons.tile.FlxTileSpecial;
 import flixel.addons.tile.FlxTilemapExt;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxColor;
 import haxe.io.Path;
 
 /**
@@ -216,10 +217,15 @@ class TiledLevel extends TiledMap
 		switch (o.name.toLowerCase())
 		{
 			case "start":
-				var frog = new Frog(x, y);
+				var boundSprite = new FlxSprite(x, y);
+				boundSprite.makeGraphic(18, 18, FlxColor.RED);
+				boundSprite.alpha = 0.0;
+				var frog = new Frog(x, y, boundSprite);
 				state.player = frog;
 				FlxG.camera.follow(frog);
 				group.add(frog);
+				state.boundingBox = boundSprite;
+				group.add(boundSprite);
 			// var player = new FlxSprite(x, y);
 			// player.makeGraphic(32, 32, 0xffaa1111);
 			// player.maxVelocity.x = 160;
@@ -332,9 +338,13 @@ class TiledLevel extends TiledMap
 				state.swamp = swamp;
 				state.swamp.ID = 1;
 			case "lava":
-				var lava = new FlxObject(x, y, o.width, o.height);
-				state.lava = lava;
-				state.lava.ID = 2;
+				var lava = new FlxSprite(x, y);
+				lava.makeGraphic(o.width, o.height, FlxColor.ORANGE);
+				lava.alpha = 0.0;
+				// var lava = new FlxObject(x, y, o.width, o.height);
+				state.lavaGroup.add(lava);
+				group.add(lava);
+				trace("Lava width: " + o.width + " height: " + o.height);
 			case "home":
 				var home = new Home(x, y, Std.parseInt(o.properties.get("hideTimer")), Std.parseInt(o.properties.get("startTime")), 10);
 				state.homeGroup.add(home);
